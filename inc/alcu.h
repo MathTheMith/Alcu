@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:03:37 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 16:16:56 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/28 17:42:31 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void    free_board(t_board *board);
 void    print_board(t_board *board);
 void    init_board_window(void);
 int     render_board_window(t_board *board);
-char	*readline_windowed(int fd, t_board *board);
+int     wait_for_button(int fd, t_board *board);
+void    set_ai_took(int n);

@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 07:11:20 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/28 17:59:43 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-static int	remove_items(t_board *board, char *answer)
+static int	remove_items(t_board *board, int choice)
 {
-	board->heaps[board->nb_heap - 1] -= ft_atoi(answer);
+	board->heaps[board->nb_heap - 1] -= (size_t)choice;
 	if (board->heaps[board->nb_heap - 1] == 0)
 		board->nb_heap--;
 	fill_board(board);
@@ -28,39 +28,37 @@ static int	remove_items(t_board *board, char *answer)
 static void	launch_game(t_board *board, int fd)
 {
 	bool	play_turn;
-	char	*answer;
+	int		choice;
 
 	play_turn = false;
-	answer = NULL;
 	while (1)
 	{
 		play_turn = !play_turn;
 		if (play_turn)
 		{
 			write(1, "AI took 1\n", 10);
-			if (remove_items(board, "1"))
+			set_ai_took(1);
+			if (remove_items(board, 1))
 				break ;
 		}
 		else
 		{
 			write(1, "Choose between 1 and 3 items\n",
 				ft_strlen("Choose between 1 and 3 items\n"));
-			answer = readline_windowed(fd, board);
-			if (!answer)
+			choice = wait_for_button(fd, board);
+			if (!choice)
 				break ;
-			if (ft_atoi(answer) < 1 || ft_atoi(answer) > 3
-				|| ft_atoi(answer) > board->heaps[board->nb_heap - 1])
+			char c = choice + '0';
+			write(1, &c, 1);
+			write(1, "\n", 1);
+			if (choice < 1 || choice > 3
+				|| (size_t)choice > board->heaps[board->nb_heap - 1])
 			{
-				write(1, answer, ft_strlen(answer));
 				write(1, " - Invalid choice\n", 18);
 				play_turn = !play_turn;
 			}
-			else if (remove_items(board, answer))
-			{
-				free(answer);
+			else if (remove_items(board, choice))
 				break ;
-			}
-			free(answer);
 		}
 		if (board->nb_heap == 0)
 		{

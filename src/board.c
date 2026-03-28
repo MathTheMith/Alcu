@@ -85,7 +85,7 @@ static int	init_board(t_board *board)
 		return (-1);
 	while (i < board->nb_heap)
 	{
-		board->board[i] = malloc(board->bigest_nb * sizeof(char) * 2);
+		board->board[i] = malloc(board->bigest_nb * sizeof(char) * 2 + 1);
 		if (!board->board[i])
 			return (-1);
 		i++;
