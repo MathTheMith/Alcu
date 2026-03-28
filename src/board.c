@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 15:05:53 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/28 15:35:49 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	*readline_(int fd)
 static int	check_line(char *line)
 {
 	if (!is_number(line))
+		return (-1);
+	if (atoi(line) < 1 || atoi(line) > 10000)
 		return (-1);
 	return (1);
 }
@@ -115,6 +117,7 @@ void	fill_board(t_board *board)
 			j++;
 			k++;
 		}
+		board->board[i][j] = '\0';
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:03:37 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 15:07:18 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/28 16:16:56 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,6 @@ char	*readline_(int fd);
 void	fill_board(t_board *board);
 void    free_board(t_board *board);
 void    print_board(t_board *board);
+void    init_board_window(void);
+int     render_board_window(t_board *board);
+char	*readline_windowed(int fd, t_board *board);

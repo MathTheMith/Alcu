@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,16 +11,18 @@
 /* ************************************************************************** */
 
 #include "alcu.h"
+#include "raylib.h"
 #include <stdlib.h>
 #include <stdbool.h>
 
-static void	remove_items(t_board *board, char *answer)
+static int	remove_items(t_board *board, char *answer)
 {
 	board->heaps[board->nb_heap - 1] -= ft_atoi(answer);
 	if (board->heaps[board->nb_heap - 1] == 0)
 		board->nb_heap--;
 	fill_board(board);
 	print_board(board);
+	return (render_board_window(board));
 }
 
 static void	launch_game(t_board *board, int fd)
@@ -36,13 +38,14 @@ static void	launch_game(t_board *board, int fd)
 		if (play_turn)
 		{
 			write(1, "AI took 1\n", 10);
-			remove_items(board, "1");
+			if (remove_items(board, "1"))
+				break ;
 		}
 		else
 		{
 			write(1, "Choose between 1 and 3 items\n",
 				ft_strlen("Choose between 1 and 3 items\n"));
-			answer = readline_(fd);
+			answer = readline_windowed(fd, board);
 			if (!answer)
 				break ;
 			if (ft_atoi(answer) < 1 || ft_atoi(answer) > 3
@@ -52,8 +55,11 @@ static void	launch_game(t_board *board, int fd)
 				write(1, " - Invalid choice\n", 18);
 				play_turn = !play_turn;
 			}
-			else
-				remove_items(board, answer);
+			else if (remove_items(board, answer))
+			{
+				free(answer);
+				break ;
+			}
 			free(answer);
 		}
 		if (board->nb_heap == 0)
@@ -80,8 +86,11 @@ int	main(void)
 	tty = open("/dev/tty", O_RDONLY);
 	if (tty == -1)
 		return (1);
+	init_board_window();
 	print_board(&board);
-	launch_game(&board, tty);
+	if (!render_board_window(&board))
+		launch_game(&board, tty);
+	CloseWindow();
 	free_board(&board);
 	close(tty);
 	return (0);
