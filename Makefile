@@ -34,6 +34,7 @@ P_OBJ_BON = .obj_bonus/
 
 SRC = \
 	main.c \
+	game.c \
 	board.c \
 	utils.c \
 
@@ -42,6 +43,7 @@ SRC_BONUS = \
 	board.c \
 	utils.c \
 	window.c \
+	input.c \
 
 #############################################################################################
 #                                        MANIPULATION                                       #

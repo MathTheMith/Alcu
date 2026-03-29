@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 09:12:19 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 10:10:19 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	remove_items(t_board *board, int choice)
 	return (render_board_window(board));
 }
 
-static void	launch_game(t_board *board, int fd)
+void	launch_game(t_board *board, int fd)
 {
 	bool	play_turn;
 	int		choice;
@@ -62,7 +62,7 @@ static void	launch_game(t_board *board, int fd)
 		}
 		if (board->nb_heap == 0)
 		{
-			if (play_turn)
+			if (!play_turn)
 				write(1, "AI is the winner! Congratulations!\n", 35);
 			else
 				write(1, "You are the winner! Congratulations!\n", 37);
