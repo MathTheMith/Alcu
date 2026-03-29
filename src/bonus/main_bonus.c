@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 15:02:42 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:33:31 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	main(void)
 	}
 	tty = open("/dev/tty", O_RDONLY | O_NONBLOCK);
 	if (tty == -1)
+	{
+		free_board(&board);
 		return (1);
+	}
 	init_board_window();
 	print_board(&board);
 	if (!render_board_window(&board))

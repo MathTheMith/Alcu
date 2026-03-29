@@ -6,7 +6,7 @@
 #    By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/28 12:25:05 by lud-adam          #+#    #+#              #
-#    Updated: 2026/03/29 15:28:13 by mvachon          ###   ########.fr        #
+#    Updated: 2026/03/29 18:20:21 by mvachon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,10 +42,10 @@ SRC = \
 SRC_BONUS = \
 	bonus/main_bonus.c \
 	bonus/game_bonus.c \
+	bonus/input.c \
+	bonus/window.c \
 	board.c \
 	utils.c \
-	window.c \
-	input.c \
 	robot.c \
 
 #############################################################################################

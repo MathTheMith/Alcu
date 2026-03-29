@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 18:13:29 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:41:29 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*readline_(int fd)
 {
 	char	buf;
 	char	*line = NULL;
-	size_t	r;
+	ssize_t	r;
 
 	while (1)
 	{
