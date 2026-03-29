@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 18:41:29 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 19:53:16 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ char	*readline_(int fd)
 	while (1)
 	{
 		r = read(fd, &buf, 1);
-		if (r <= 0)
-			break ;
-		if (buf == '\n')
+		if (r <= 0 || buf == '\n')
 			break ;
 		line = ft_strjoin(line, buf);
 		if (!line)
@@ -52,12 +50,13 @@ static int	get_board(t_board *board, int fd)
 	board->biggest_nb = 0;
 	line = readline_(fd);
 	if (!line)
-		return -1;
+		return (-1);
 	while (line)
 	{
 		if (check_line(line) == -1)
 		{
 			free(line);
+			free(board->heaps);
 			free_board(board);
 			return (-1);
 		}
@@ -162,14 +161,14 @@ void	print_board(t_board *board)
 	}
 }
 
-int	set_board(t_board *board)
+int	set_board(t_board *board, int fd)
 {
 	board->nb_heap = 0;
 	board->total_heaps = 0;
 	board->heaps = NULL;
 	board->board = NULL;
 	board->biggest_nb = 0;
-	if (get_board(board, 0) == -1)
+	if (get_board(board, fd) == -1)
 		return (-1);
 	board->total_heaps = board->nb_heap;
 	if (init_board(board) == -1)

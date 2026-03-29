@@ -68,8 +68,7 @@ int	wait_for_button(int fd, t_board *board)
 				{
 					write(1, buf, ft_strlen(buf));
 					write(1, " - Invalid choice\n", 18);
-					write(1, "Choose between 1 and 3 items\n",
-						ft_strlen("Choose between 1 and 3 items\n"));
+					write(1, "Please choose between 1 and 3 items\n",36);
 				}
 			}
 			else if (c != '\n' && buf_len < 7)
@@ -77,7 +76,10 @@ int	wait_for_button(int fd, t_board *board)
 		}
 		key = check_key(board);
 		if (key)
+		{
+			buf_len = 0;
 			return (key);
+		}
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 		{
 			mouse = GetMousePosition();
@@ -89,7 +91,10 @@ int	wait_for_button(int fd, t_board *board)
 				if (mouse.x >= bx && mouse.x <= bx + BTN_W
 					&& mouse.y >= BTN_Y && mouse.y <= BTN_Y + BTN_H
 					&& (size_t)i <= board->heaps[board->nb_heap - 1])
+				{
+					buf_len = 0;
 					return (i);
+				}
 				i++;
 			}
 		}

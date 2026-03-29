@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 18:08:17 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 19:44:59 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,11 @@ static int	remove_items(t_board *board, int choice)
 static int	player_turn(t_board *board, int fd, bool *play_turn)
 {
 	int		choice;
-	char	c;
 
-	write(1, "Choose between 1 and 3 items\n",
-		ft_strlen("Choose between 1 and 3 items\n"));
+	write(1, "Please choose between 1 and 3 items\n",36);
 	choice = wait_for_button(fd, board);
 	if (!choice)
 		return (-1);
-	c = choice + '0';
 	if (choice < 1 || choice > 3
 		|| (size_t)choice > board->heaps[board->nb_heap - 1])
 	{
@@ -66,9 +63,7 @@ void	launch_game(t_board *board, int fd)
 		else
 		{
 			ret = player_turn(board, fd, &play_turn);
-			if (ret == -1)
-				break ;
-			if (ret > 0)
+			if (ret == -1 || ret > 0)
 				break ;
 		}
 		if (board->nb_heap == 0)

@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 18:08:23 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 19:44:54 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ static bool	player_turn(t_board *board, int fd, bool *play_turn)
 {
 	char	*answer;
 
-	write(1, "Choose between 1 and 3 items\n",
-		ft_strlen("Choose between 1 and 3 items\n"));
+	write(1, "Please choose between 1 and 3 items\n",36);
 	answer = readline_(fd);
 	if (!answer)
 		return (false);

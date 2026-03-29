@@ -6,14 +6,12 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:58 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 18:14:16 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 19:53:34 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alcu.h"
 #include <stdlib.h>
-#include <stdlib.h>
-#include <string.h>
 
 size_t	ft_strlen(char *s)
 {
@@ -32,7 +30,10 @@ char	*ft_strjoin(char *s1, char c)
 
 	res = malloc(len + 2);
 	if (!res)
+	{
+		free(s1);
 		return (NULL);
+	}
 	while (i < len)
 	{
 		res[i] = s1[i];
@@ -44,32 +45,16 @@ char	*ft_strjoin(char *s1, char c)
 	return (res);
 }
 
-void *memcpy_(void *dest, const void *src, size_t n)
-{
-    unsigned char *d = (unsigned char *)dest;
-    const unsigned char *s = (const unsigned char *)src;
-
-    for (size_t i = 0; i < n; i++)
-        d[i] = s[i];
-
-    return dest;
-}
 
 size_t	ft_atoi(const char *str)
 {
-	int	sign;
 	size_t	res;
 
-	sign = 1;
 	res = 0;
 	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
 		str++;
 	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1;
 		str++;
-	}
 	while (*str >= '0' && *str <= '9')
 	{
 		res = res * 10 + (*str - '0');
@@ -103,7 +88,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	unsigned char	*d;
 	const unsigned char	*s;
 
-	if (!dest && !src)
+	if (!dest || !src)
 		return (NULL);
 	d = (unsigned char *)dest;
 	s = (const unsigned char *)src;

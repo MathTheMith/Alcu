@@ -6,13 +6,13 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 13:12:43 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 17:49:09 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 19:54:17 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alcu.h"
 
-int ai_choose(char *number)
+static int ai_choose(char *number)
 {
     write(1, "AI took ", 8);
     write(1, number, 1);
