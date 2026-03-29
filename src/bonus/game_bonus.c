@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   game_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 10:10:19 by mvachon          ###   ########.fr       */
+/*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
+/*   Updated: 2026/03/29 00:00:00 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alcu.h"
 #include "raylib.h"
-#include <stdlib.h>
 #include <stdbool.h>
 
 static int	remove_items(t_board *board, int choice)
@@ -25,39 +24,53 @@ static int	remove_items(t_board *board, int choice)
 	return (render_board_window(board));
 }
 
+static int	player_turn(t_board *board, int fd, bool *play_turn)
+{
+	int		choice;
+	char	c;
+
+	write(1, "Choose between 1 and 3 items\n",
+		ft_strlen("Choose between 1 and 3 items\n"));
+	choice = wait_for_button(fd, board);
+	if (!choice)
+		return (-1);
+	c = choice + '0';
+	write(1, &c, 1);
+	write(1, "\n", 1);
+	if (choice < 1 || choice > 3
+		|| (size_t)choice > board->heaps[board->nb_heap - 1])
+	{
+		write(1, " - Invalid choice\n", 18);
+		*play_turn = !(*play_turn);
+		return (0);
+	}
+	board->player_nb = choice;
+	return (remove_items(board, choice));
+}
+
 void	launch_game(t_board *board, int fd)
 {
 	bool	play_turn;
-	int		choice;
+	int		ret;
 
+	board->player_nb = -1;
 	play_turn = false;
 	while (1)
 	{
 		play_turn = !play_turn;
 		if (play_turn)
 		{
-			write(1, "AI took 1\n", 10);
-			set_ai_took(1);
-			if (remove_items(board, 1))
+			int nb_ai = ai_play(board);
+			set_ai_took(nb_ai);
+			if (remove_items(board, nb_ai))
 				break ;
 		}
 		else
 		{
-			write(1, "Choose between 1 and 3 items\n",
-				ft_strlen("Choose between 1 and 3 items\n"));
-			choice = wait_for_button(fd, board);
-			if (!choice)
+			ret = player_turn(board, fd, &play_turn);
+			if (ret == -1)
 				break ;
-			char c = choice + '0';
-			write(1, &c, 1);
-			write(1, "\n", 1);
-			if (choice < 1 || choice > 3
-				|| (size_t)choice > board->heaps[board->nb_heap - 1])
-			{
-				write(1, " - Invalid choice\n", 18);
-				play_turn = !play_turn;
-			}
-			else if (remove_items(board, choice))
+			if (ret > 0)
 				break ;
 		}
 		if (board->nb_heap == 0)
@@ -69,27 +82,4 @@ void	launch_game(t_board *board, int fd)
 			break ;
 		}
 	}
-}
-
-int	main(void)
-{
-	t_board	board;
-	int		tty;
-
-	if (set_board(&board) == -1)
-	{
-		write(1, "ERROR\n", 6);
-		return (1);
-	}
-	tty = open("/dev/tty", O_RDONLY | O_NONBLOCK);
-	if (tty == -1)
-		return (1);
-	init_board_window();
-	print_board(&board);
-	if (!render_board_window(&board))
-		launch_game(&board, tty);
-	CloseWindow();
-	free_board(&board);
-	close(tty);
-	return (0);
 }

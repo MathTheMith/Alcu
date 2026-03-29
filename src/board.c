@@ -100,6 +100,14 @@ void	fill_board(t_board *board)
 	size_t	k;
 
 	i = 0;
+	board->bigest_nb = 0;
+	while (i < board->nb_heap)
+	{
+		if (board->heaps[i] > board->bigest_nb)
+			board->bigest_nb = board->heaps[i];
+		i++;
+	}
+	i = 0;
 	while (i < board->nb_heap)
 	{
 		j = 0;

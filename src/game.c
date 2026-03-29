@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 00:00:00 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 14:11:38 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-static void	remove_items(t_board *board, char *answer)
+static void	remove_items(t_board *board, int answer)
 {
-	board->heaps[board->nb_heap - 1] -= ft_atoi(answer);
+	board->heaps[board->nb_heap - 1] -= answer;
 	if (board->heaps[board->nb_heap - 1] == 0)
 		board->nb_heap--;
 	fill_board(board);
@@ -40,7 +40,10 @@ static bool	player_turn(t_board *board, int fd, bool *play_turn)
 		*play_turn = !(*play_turn);
 	}
 	else
-		remove_items(board, answer);
+	{
+		board->player_nb = ft_atoi(answer);
+		remove_items(board, ft_atoi(answer));
+	}
 	free(answer);
 	return (true);
 }
@@ -48,21 +51,22 @@ static bool	player_turn(t_board *board, int fd, bool *play_turn)
 void	launch_game(t_board *board, int fd)
 {
 	bool	play_turn;
-
+	
+	board->player_nb = -1;
 	play_turn = false;
 	while (1)
 	{
 		play_turn = !play_turn;
 		if (play_turn)
 		{
-			write(1, "AI took 1\n", 10);
-			remove_items(board, "1");
+			int ai_nb = ai_play(board);
+			remove_items(board, ai_nb);
 		}
 		else if (!player_turn(board, fd, &play_turn))
 			break ;
 		if (board->nb_heap == 0)
 		{
-			if (play_turn)
+			if (!play_turn)
 				write(1, "AI is the winner! Congratulations!\n", 35);
 			else
 				write(1, "You are the winner! Congratulations!\n", 37);

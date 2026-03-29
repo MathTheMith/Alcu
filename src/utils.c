@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:58 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 14:21:49 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 13:07:19 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,27 @@ int	is_number(char *str)
 		i++;
 	}
 	return (1);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	char	*res;
+
+	len = 0;
+	while (s[len])
+		len++;
+	res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	len = 0;
+	while (s[len])
+	{
+		res[len] = s[len];
+		len++;
+	}
+	res[len] = '\0';
+	return (res);
 }
 
 void *realloc_(void *ptr, size_t old_size, size_t new_size)

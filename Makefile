@@ -6,7 +6,7 @@
 #    By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/28 12:25:05 by lud-adam          #+#    #+#              #
-#    Updated: 2026/03/28 16:41:47 by mvachon          ###   ########.fr        #
+#    Updated: 2026/03/29 15:28:13 by mvachon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,16 @@ SRC = \
 	game.c \
 	board.c \
 	utils.c \
+	robot.c \
 
 SRC_BONUS = \
-	main_bonus.c \
+	bonus/main_bonus.c \
+	bonus/game_bonus.c \
 	board.c \
 	utils.c \
 	window.c \
 	input.c \
+	robot.c \
 
 #############################################################################################
 #                                        MANIPULATION                                       #
