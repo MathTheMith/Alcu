@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 14:11:38 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:08:23 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static bool	player_turn(t_board *board, int fd, bool *play_turn)
 	if (!answer)
 		return (false);
 	if (ft_atoi(answer) < 1 || ft_atoi(answer) > 3
-		|| ft_atoi(answer) > board->heaps[board->nb_heap - 1])
+		|| ft_atoi(answer) > board->heaps[board->nb_heap - 1] || ft_strlen(answer) != 1)
 	{
 		write(1, answer, ft_strlen(answer));
 		write(1, " - Invalid choice\n", 18);

@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 15:35:49 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:13:29 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_line(char *line)
 {
 	if (!is_number(line))
 		return (-1);
-	if (atoi(line) < 1 || atoi(line) > 10000)
+	if (ft_atoi(line) < 1 || ft_atoi(line) > 10000)
 		return (-1);
 	return (1);
 }
@@ -49,25 +49,30 @@ static int	get_board(t_board *board, int fd)
 	char	*line;
 	size_t	*tmp;
 
-	board->bigest_nb = 0;
+	board->biggest_nb = 0;
 	line = readline_(fd);
+	if (!line)
+		return -1;
 	while (line)
 	{
 		if (check_line(line) == -1)
 		{
 			free(line);
+			free_board(board);
 			return (-1);
 		}
 		tmp = realloc_(board->heaps, board->nb_heap * sizeof(size_t), (board->nb_heap + 1) * sizeof(size_t));
 		if (!tmp)
 		{
 			free(line);
+			free(board->heaps);
+			free_board(board);
 			return (-1);
 		}
 		board->heaps = tmp;
 		board->heaps[board->nb_heap] = ft_atoi(line);
-		if (board->heaps[board->nb_heap] > board->bigest_nb)
-			board->bigest_nb = board->heaps[board->nb_heap];
+		if (board->heaps[board->nb_heap] > board->biggest_nb)
+			board->biggest_nb = board->heaps[board->nb_heap];
 		board->nb_heap++;
 		free(line);
 		line = readline_(fd);
@@ -82,12 +87,24 @@ static int	init_board(t_board *board)
 	i = 0;
 	board->board = malloc(board->nb_heap * sizeof(char *));
 	if (!board->board)
+	{
+		free(board->heaps);
 		return (-1);
+	}
 	while (i < board->nb_heap)
 	{
-		board->board[i] = malloc(board->bigest_nb * sizeof(char) * 2 + 1);
+		board->board[i] = malloc((board->biggest_nb * 2 + 1) * sizeof(char));
 		if (!board->board[i])
+		{
+			while (i)
+			{
+				i--;
+				free(board->board[i]);
+			}
+			free(board->heaps);
+			free(board->board);
 			return (-1);
+		}
 		i++;
 	}
 	return (0);
@@ -100,18 +117,18 @@ void	fill_board(t_board *board)
 	size_t	k;
 
 	i = 0;
-	board->bigest_nb = 0;
+	board->biggest_nb = 0;
 	while (i < board->nb_heap)
 	{
-		if (board->heaps[i] > board->bigest_nb)
-			board->bigest_nb = board->heaps[i];
+		if (board->heaps[i] > board->biggest_nb)
+			board->biggest_nb = board->heaps[i];
 		i++;
 	}
 	i = 0;
 	while (i < board->nb_heap)
 	{
 		j = 0;
-		while (j < (board->bigest_nb - board->heaps[i]))
+		while (j < (board->biggest_nb - board->heaps[i]))
 		{
 			board->board[i][j] = ' ';
 			j++;
@@ -138,7 +155,7 @@ void	print_board(t_board *board)
 	i = 0;
 	while (i < board->nb_heap)
 	{
-		len = (board->bigest_nb - board->heaps[i]) + board->heaps[i] * 2;
+		len = (board->biggest_nb - board->heaps[i]) + board->heaps[i] * 2;
 		write(1, board->board[i], len);
 		write(1, "\n", 1);
 		i++;
@@ -151,7 +168,7 @@ int	set_board(t_board *board)
 	board->total_heaps = 0;
 	board->heaps = NULL;
 	board->board = NULL;
-	board->bigest_nb = 0;
+	board->biggest_nb = 0;
 	if (get_board(board, 0) == -1)
 		return (-1);
 	board->total_heaps = board->nb_heap;
@@ -166,11 +183,14 @@ void	free_board(t_board *board)
 	size_t	i;
 
 	i = 0;
+	if (!board || !board->board)
+    	return;
 	while (i < board->total_heaps)
 	{
 		free(board->board[i]);
 		i++;
 	}
 	free(board->board);
-	free(board->heaps);
+	if (board->heaps)
+		free(board->heaps);
 }

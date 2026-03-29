@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:58 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 13:07:19 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:14:16 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ size_t	ft_atoi(const char *str)
 		res = res * 10 + (*str - '0');
 		str++;
 	}
-	return (res * sign);
+	return (res);
 }
 
 int	is_number(char *str)
@@ -97,25 +97,23 @@ int	is_number(char *str)
 	return (1);
 }
 
-char	*ft_strdup(const char *s)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	len;
-	char	*res;
+	size_t			i;
+	unsigned char	*d;
+	const unsigned char	*s;
 
-	len = 0;
-	while (s[len])
-		len++;
-	res = malloc(len + 1);
-	if (!res)
+	if (!dest && !src)
 		return (NULL);
-	len = 0;
-	while (s[len])
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	i = 0;
+	while (i < n)
 	{
-		res[len] = s[len];
-		len++;
+		d[i] = s[i];
+		i++;
 	}
-	res[len] = '\0';
-	return (res);
+	return (dest);
 }
 
 void *realloc_(void *ptr, size_t old_size, size_t new_size)
@@ -132,7 +130,7 @@ void *realloc_(void *ptr, size_t old_size, size_t new_size)
     new_ptr = malloc(new_size);
     if (!new_ptr)
         return NULL;
-    memcpy(new_ptr, ptr, old_size);
+    ft_memcpy(new_ptr, ptr, old_size);
     free(ptr);
     return new_ptr;
 }

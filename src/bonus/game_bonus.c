@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 00:00:00 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 18:08:17 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ static int	player_turn(t_board *board, int fd, bool *play_turn)
 	if (!choice)
 		return (-1);
 	c = choice + '0';
-	write(1, &c, 1);
-	write(1, "\n", 1);
 	if (choice < 1 || choice > 3
 		|| (size_t)choice > board->heaps[board->nb_heap - 1])
 	{

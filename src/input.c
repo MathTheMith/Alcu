@@ -64,6 +64,13 @@ int	wait_for_button(int fd, t_board *board)
 				if (choice >= 1 && choice <= 3
 					&& (size_t)choice <= board->heaps[board->nb_heap - 1])
 					return (choice);
+				else
+				{
+					write(1, buf, ft_strlen(buf));
+					write(1, " - Invalid choice\n", 18);
+					write(1, "Choose between 1 and 3 items\n",
+						ft_strlen("Choose between 1 and 3 items\n"));
+				}
 			}
 			else if (c != '\n' && buf_len < 7)
 				buf[buf_len++] = c;
