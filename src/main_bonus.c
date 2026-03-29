@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:20 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/28 17:59:43 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/29 09:12:19 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(void)
 		write(1, "ERROR\n", 6);
 		return (1);
 	}
-	tty = open("/dev/tty", O_RDONLY);
+	tty = open("/dev/tty", O_RDONLY | O_NONBLOCK);
 	if (tty == -1)
 		return (1);
 	init_board_window();

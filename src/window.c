@@ -12,7 +12,6 @@
 
 #include "alcu.h"
 #include "raylib.h"
-#include <sys/select.h>
 #include <stdlib.h>
 
 #define WIN_W	1000
@@ -131,34 +130,54 @@ int	render_board_window(t_board *board)
 		|| IsKeyPressed(KEY_ENTER));
 }
 
+static int	check_key(t_board *board)
+{
+	int	key;
+
+	key = GetKeyPressed();
+	if (key == KEY_ONE && (size_t)1 <= board->heaps[board->nb_heap - 1])
+		return (1);
+	if (key == KEY_TWO && (size_t)2 <= board->heaps[board->nb_heap - 1])
+		return (2);
+	if (key == KEY_THREE && (size_t)3 <= board->heaps[board->nb_heap - 1])
+		return (3);
+	return (0);
+}
+
 int	wait_for_button(int fd, t_board *board)
 {
-	fd_set			rfds;
-	struct timeval	tv;
-	char			*line;
-	Vector2			mouse;
-	int				i;
-	int				bx;
+	static char	buf[8];
+	static int	buf_len = 0;
+	Vector2		mouse;
+	int			i;
+	int			bx;
+	int			key;
+	char		c;
+	int			choice;
 
 	while (!WindowShouldClose() && !IsKeyPressed(KEY_ESCAPE))
 	{
-		FD_ZERO(&rfds);
-		FD_SET(fd, &rfds);
-		tv.tv_sec = 0;
-		tv.tv_usec = 16000;
-		if (select(fd + 1, &rfds, NULL, NULL, &tv) > 0)
-		{
-			line = readline_(fd);
-			if (!line)
-				return (0);
-			i = (int)ft_atoi(line);
-			free(line);
-			return (i);
-		}
 		BeginDrawing();
 		draw_board(board);
 		draw_buttons(board->heaps[board->nb_heap - 1]);
 		EndDrawing();
+		if (read(fd, &c, 1) > 0)
+		{
+			if (c == '\n' && buf_len > 0)
+			{
+				buf[buf_len] = '\0';
+				buf_len = 0;
+				choice = (int)ft_atoi(buf);
+				if (choice >= 1 && choice <= 3
+					&& (size_t)choice <= board->heaps[board->nb_heap - 1])
+					return (choice);
+			}
+			else if (c != '\n' && buf_len < 7)
+				buf[buf_len++] = c;
+		}
+		key = check_key(board);
+		if (key)
+			return (key);
 		if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
 		{
 			mouse = GetMousePosition();
