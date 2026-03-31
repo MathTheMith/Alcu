@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:11:58 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 19:53:34 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/31 07:56:02 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,22 @@ char	*ft_strjoin(char *s1, char c)
 size_t	ft_atoi(const char *str)
 {
 	size_t	res;
-
+	int		sign = 1;
 	res = 0;
 	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
 		str++;
 	if (*str == '-' || *str == '+')
+	{
+		if (sign == '-')
+			sign = -1;
 		str++;
+	}
 	while (*str >= '0' && *str <= '9')
 	{
 		res = res * 10 + (*str - '0');
 		str++;
 	}
-	return (res);
+	return (res * sign);
 }
 
 int	is_number(char *str)
@@ -70,7 +74,7 @@ int	is_number(char *str)
 	if (!str || !str[0])
 		return (0);
 	if (str[0] == '-' || str[0] == '+')
-		i++;
+		return (0);
 	if (!str[i])
 		return (0);
 	while (str[i])

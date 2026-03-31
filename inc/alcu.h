@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 07:03:37 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 19:07:15 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/31 07:53:23 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ typedef struct board{
     size_t *heaps;
     char **board;
     size_t biggest_nb;
-    int player_nb;
 } t_board;
 
 size_t	ft_strlen(char *s);

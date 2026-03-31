@@ -6,7 +6,7 @@
 /*   By: mvachon <mvachon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:00:00 by mvachon           #+#    #+#             */
-/*   Updated: 2026/03/29 19:44:59 by mvachon          ###   ########.fr       */
+/*   Updated: 2026/03/31 07:53:32 by mvachon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int	player_turn(t_board *board, int fd, bool *play_turn)
 		*play_turn = !(*play_turn);
 		return (0);
 	}
-	board->player_nb = choice;
 	return (remove_items(board, choice));
 }
 
@@ -48,7 +47,6 @@ void	launch_game(t_board *board, int fd)
 	bool	play_turn;
 	int		ret;
 
-	board->player_nb = -1;
 	play_turn = false;
 	while (1)
 	{
